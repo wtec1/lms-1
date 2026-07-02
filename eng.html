@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Grammar Quiz</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-slate-100">
+
+<div class="max-w-5xl mx-auto p-6">
+
+    <div class="bg-white shadow-xl rounded-xl overflow-hidden">
+
+        <div class="bg-blue-700 text-white p-6 text-center">
+            <h1 class="text-3xl font-bold">English Grammar Quiz</h1>
+            <p class="mt-2">15 Multiple Choice Questions</p>
+        </div>
+
+        <div id="quiz" class="p-8 space-y-8"></div>
+
+        <div class="text-center pb-8">
+            <button onclick="submitQuiz()"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold">
+                Submit Quiz
+            </button>
+        </div>
+
+        <div id="result" class="hidden p-8 border-t bg-green-50"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+const questions=[
+
+{
+question:"1. Which sentence is grammatically correct?",
+options:[
+"She go to school every day.",
+"She goes to school every day.",
+"She going to school every day.",
+"She gone to school every day."
+],
+answer:1
+},
+
+{
+question:"2. Choose the correct pronoun: ____ is my best friend.",
+options:[
+"He",
+"Him",
+"His",
+"Himself"
+],
+answer:0
+},
+
+{
+question:"3. Which word is a noun?",
+options:[
+"Quickly",
+"Beautiful",
+"Teacher",
+"Run"
+],
+answer:2
+},
+
+{
+question:"4. Choose the correct verb: They ____ football every Saturday.",
+options:[
+"plays",
+"play",
+"playing",
+"played"
+],
+answer:1
+},
+
+{
+question:"5. Which sentence is in the past tense?",
+options:[
+"I eat rice.",
+"I am eating rice.",
+"I ate rice.",
+"I will eat rice."
+],
+answer:2
+},
+
+{
+question:"6. Which word is an adjective?",
+options:[
+"Slowly",
+"Happy",
+"Run",
+"Speak"
+],
+answer:1
+},
+
+{
+question:"7. Choose the correct article: She bought ____ umbrella.",
+options:[
+"a",
+"an",
+"the",
+"no article"
+],
+answer:1
+},
+
+{
+question:"8. Which sentence uses punctuation correctly?",
+options:[
+"Where are you going.",
+"Where are you going?",
+"Where are you going!",
+"Where are you going,"
+],
+answer:1
+},
+
+{
+question:"9. Which word is the opposite of 'hot'?",
+options:[
+"Warm",
+"Cold",
+"Heat",
+"Fire"
+],
+answer:1
+},
+
+{
+question:"10. Identify the adverb in the sentence: John ran quickly.",
+options:[
+"John",
+"Ran",
+"Quickly",
+"The"
+],
+answer:2
+},
+
+{
+question:"11. Complete the sentence: The children ____ playing outside.",
+options:[
+"is",
+"are",
+"was",
+"be"
+],
+answer:1
+},
+
+{
+question:"12. Which sentence is written in the future tense?",
+options:[
+"We walked home.",
+"We walk home.",
+"We will walk home.",
+"We are walking home."
+],
+answer:2
+},
+
+{
+question:"13. Choose the correct possessive form.",
+options:[
+"The dog tail",
+"The dogs tail",
+"The dog's tail",
+"The dogs' tail"
+],
+answer:2
+},
+
+{
+question:"14. Which word is a conjunction?",
+options:[
+"And",
+"House",
+"Beautiful",
+"Sing"
+],
+answer:0
+},
+
+{
+question:"15. Which sentence is correct?",
+options:[
+"I doesn't like milk.",
+"I don't likes milk.",
+"I don't like milk.",
+"I not like milk."
+],
+answer:2
+}
+
+];
+
+const quiz=document.getElementById("quiz");
+
+questions.forEach((q,index)=>{
+
+let html=`
+<div class="border rounded-lg p-5 bg-gray-50">
+
+<h2 class="font-semibold text-lg mb-4">${q.question}</h2>
+`;
+
+q.options.forEach((option,i)=>{
+
+html+=`
+<label class="block p-3 rounded hover:bg-blue-50 cursor-pointer">
+
+<input
+type="radio"
+name="q${index}"
+value="${i}"
+class="mr-2">
+
+${option}
+
+</label>
+`;
+
+});
+
+html+=`
+
+<div id="feedback${index}" class="mt-3 font-medium"></div>
+
+</div>
+`;
+
+quiz.innerHTML+=html;
+
+});
+
+function submitQuiz(){
+
+let score=0;
+
+questions.forEach((q,index)=>{
+
+const selected=document.querySelector(`input[name="q${index}"]:checked`);
+
+const feedback=document.getElementById(`feedback${index}`);
+
+if(selected){
+
+if(Number(selected.value)===q.answer){
+
+score++;
+
+feedback.innerHTML="<span class='text-green-600'>✔ Correct</span>";
+
+}else{
+
+feedback.innerHTML=`<span class='text-red-600'>✘ Incorrect<br><strong>Correct Answer:</strong> ${q.options[q.answer]}</span>`;
+
+}
+
+}else{
+
+feedback.innerHTML=`<span class='text-red-600'>No answer selected.<br><strong>Correct Answer:</strong> ${q.options[q.answer]}</span>`;
+
+}
+
+});
+
+const percent=((score/questions.length)*100).toFixed(1);
+
+let grade="";
+
+if(percent>=80){
+
+grade="🏆 Excellent";
+
+}else if(percent>=70){
+
+grade="🥇 Very Good";
+
+}else if(percent>=60){
+
+grade="👍 Good";
+
+}else if(percent>=50){
+
+grade="✔ Pass";
+
+}else{
+
+grade="❌ Fail";
+
+}
+
+const result=document.getElementById("result");
+
+result.classList.remove("hidden");
+
+result.innerHTML=`
+
+<h2 class="text-3xl font-bold text-center text-blue-700">
+
+Quiz Completed
+
+</h2>
+
+<div class="text-center mt-6 space-y-3">
+
+<p class="text-xl">
+
+Score:
+<strong>${score} / ${questions.length}</strong>
+
+</p>
+
+<p class="text-xl">
+
+Percentage:
+<strong>${percent}%</strong>
+
+</p>
+
+<p class="text-2xl font-bold">
+
+${grade}
+
+</p>
+
+<button
+onclick="location.reload()"
+class="mt-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg">
+
+Restart Quiz
+
+</button>
+
+</div>
+
+`;
+
+window.scrollTo({
+
+top:document.body.scrollHeight,
+
+behavior:"smooth"
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

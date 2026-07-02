@@ -1,0 +1,325 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agriculture Quiz - Natural Resources</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+<div class="max-w-5xl mx-auto py-8 px-4">
+
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+
+<div class="bg-green-700 text-white text-center p-6">
+<h1 class="text-3xl font-bold">Agriculture Quiz</h1>
+<p class="mt-2 text-lg">Topic: Natural Resources that Influence Agricultural Production</p>
+</div>
+
+<div id="quiz" class="p-8 space-y-8"></div>
+
+<div class="text-center pb-8">
+<button onclick="submitQuiz()" class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold">
+Submit Quiz
+</button>
+</div>
+
+<div id="result" class="hidden border-t bg-green-50 p-8"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const questions=[
+
+{
+question:"1. What are natural resources?",
+options:[
+"Things made by people",
+"Resources that occur naturally in the environment",
+"Machines used on farms",
+"Buildings used for storage"
+],
+answer:1
+},
+
+{
+question:"2. Which of the following is a natural resource?",
+options:[
+"Tractor",
+"Soil",
+"Wheelbarrow",
+"Fertilizer bag"
+],
+answer:1
+},
+
+{
+question:"3. Which natural resource supplies water for crops and animals?",
+options:[
+"Forest",
+"River",
+"Road",
+"Fence"
+],
+answer:1
+},
+
+{
+question:"4. Which natural resource provides nutrients for plant growth?",
+options:[
+"Soil",
+"House",
+"Vehicle",
+"Factory"
+],
+answer:0
+},
+
+{
+question:"5. Why are natural resources important in agriculture?",
+options:[
+"They reduce rainfall",
+"They support crop and livestock production",
+"They replace farmers",
+"They increase pollution"
+],
+answer:1
+},
+
+{
+question:"6. Which natural resource provides grazing land for livestock?",
+options:[
+"Grassland",
+"Bridge",
+"Market",
+"School"
+],
+answer:0
+},
+
+{
+question:"7. Which of the following is NOT a natural resource?",
+options:[
+"Water",
+"Soil",
+"Sunlight",
+"Tractor"
+],
+answer:3
+},
+
+{
+question:"8. What does depletion of natural resources mean?",
+options:[
+"Increasing natural resources",
+"Careful use of resources",
+"Reduction or exhaustion of natural resources",
+"Planting more crops"
+],
+answer:2
+},
+
+{
+question:"9. Which activity can cause depletion of forests?",
+options:[
+"Tree planting",
+"Afforestation",
+"Deforestation",
+"Mulching"
+],
+answer:2
+},
+
+{
+question:"10. Which practice helps conserve natural resources?",
+options:[
+"Cutting down all trees",
+"Soil conservation",
+"Burning forests",
+"Overgrazing"
+],
+answer:1
+},
+
+{
+question:"11. Which natural resource provides energy for photosynthesis?",
+options:[
+"Wind",
+"Sunlight",
+"Rain",
+"Rocks"
+],
+answer:1
+},
+
+{
+question:"12. Overgrazing mainly leads to:",
+options:[
+"Soil degradation",
+"Increased rainfall",
+"More forests",
+"Higher crop yields"
+],
+answer:0
+},
+
+{
+question:"13. Which of the following helps prevent depletion of natural resources?",
+options:[
+"Planting trees",
+"Bush burning",
+"Overcultivation",
+"Polluting rivers"
+],
+answer:0
+},
+
+{
+question:"14. Farmers should protect natural resources because they:",
+options:[
+"Are unlimited",
+"Are important for sustainable agriculture",
+"Cannot affect farming",
+"Can be replaced easily"
+],
+answer:1
+},
+
+{
+question:"15. Which statement is TRUE about natural resources?",
+options:[
+"They are not important in farming.",
+"They should be used wisely to avoid depletion.",
+"They can never be exhausted.",
+"They are only found in towns."
+],
+answer:1
+}
+
+];
+
+const quiz=document.getElementById("quiz");
+
+questions.forEach((q,index)=>{
+
+let html=`
+<div class="bg-gray-50 border rounded-lg p-5">
+<h2 class="font-semibold text-lg mb-4">${q.question}</h2>
+`;
+
+q.options.forEach((option,i)=>{
+
+html+=`
+<label class="block p-3 rounded hover:bg-green-100 cursor-pointer">
+<input type="radio" name="q${index}" value="${i}" class="mr-2">
+${option}
+</label>
+`;
+
+});
+
+html+=`<div id="feedback${index}" class="mt-3 font-medium"></div></div>`;
+
+quiz.innerHTML+=html;
+
+});
+
+function submitQuiz(){
+
+let score=0;
+
+questions.forEach((q,index)=>{
+
+const selected=document.querySelector(`input[name="q${index}"]:checked`);
+const feedback=document.getElementById(`feedback${index}`);
+
+if(selected){
+
+if(Number(selected.value)===q.answer){
+
+score++;
+feedback.innerHTML="<span class='text-green-600'>✔ Correct</span>";
+
+}else{
+
+feedback.innerHTML=`<span class='text-red-600'>✘ Incorrect.<br><strong>Correct Answer:</strong> ${q.options[q.answer]}</span>`;
+
+}
+
+}else{
+
+feedback.innerHTML=`<span class='text-red-600'>No answer selected.<br><strong>Correct Answer:</strong> ${q.options[q.answer]}</span>`;
+
+}
+
+});
+
+const percent=((score/questions.length)*100).toFixed(1);
+
+let grade="";
+
+if(percent>=80){
+
+grade="🏆 Excellent";
+
+}else if(percent>=70){
+
+grade="🥇 Very Good";
+
+}else if(percent>=60){
+
+grade="👍 Good";
+
+}else if(percent>=50){
+
+grade="✔ Pass";
+
+}else{
+
+grade="❌ Fail";
+
+}
+
+const result=document.getElementById("result");
+
+result.classList.remove("hidden");
+
+result.innerHTML=`
+<h2 class="text-3xl font-bold text-center text-green-700">Quiz Results</h2>
+
+<div class="text-center mt-6 space-y-3">
+
+<p class="text-xl">
+Score: <strong>${score} / ${questions.length}</strong>
+</p>
+
+<p class="text-xl">
+Percentage: <strong>${percent}%</strong>
+</p>
+
+<p class="text-2xl font-bold">${grade}</p>
+
+<button onclick="location.reload()" class="mt-5 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg">
+Try Again
+</button>
+
+</div>
+`;
+
+window.scrollTo({
+top:document.body.scrollHeight,
+behavior:"smooth"
+});
+
+}
+
+</script>
+
+</body>
+</html>
