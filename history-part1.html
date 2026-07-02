@@ -1,0 +1,296 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>History Quiz - The Study of History</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="bg-gray-100">
+
+<div class="max-w-5xl mx-auto p-6">
+
+    <div class="bg-white shadow-lg rounded-xl p-8">
+
+        <h1 class="text-3xl font-bold text-center text-blue-700">
+            History Quiz
+        </h1>
+
+        <p class="text-center text-gray-600 mt-2">
+            Topic: <strong>The Study of History</strong>
+        </p>
+
+        <div id="quiz" class="mt-8 space-y-8"></div>
+
+        <div class="text-center mt-10">
+            <button onclick="submitQuiz()"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold">
+                Submit Quiz
+            </button>
+        </div>
+
+        <div id="result" class="hidden mt-10 p-6 rounded-lg bg-green-100 text-center"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+question:"1. What is history?",
+options:[
+"The study of future events",
+"The study of past events",
+"The study of animals",
+"The study of mathematics"
+],
+answer:1
+},
+
+{
+question:"2. History mainly helps us to understand:",
+options:[
+"The future only",
+"The weather",
+"Past events and human activities",
+"Computer programming"
+],
+answer:2
+},
+
+{
+question:"3. Which of the following is NOT a type of history?",
+options:[
+"Political history",
+"Economic history",
+"Social history",
+"Medical history"
+],
+answer:3
+},
+
+{
+question:"4. Political history mainly deals with:",
+options:[
+"Governments and leadership",
+"Sports",
+"Music",
+"Weather"
+],
+answer:0
+},
+
+{
+question:"5. Economic history mainly studies:",
+options:[
+"Traditional dances",
+"Trade, business and money",
+"Animals",
+"Languages"
+],
+answer:1
+},
+
+{
+question:"6. Social history mainly focuses on:",
+options:[
+"People's way of life",
+"Computer technology",
+"Space exploration",
+"Road construction"
+],
+answer:0
+},
+
+{
+question:"7. Which type of history studies elections and governments?",
+options:[
+"Economic history",
+"Political history",
+"Social history",
+"Cultural history"
+],
+answer:1
+},
+
+{
+question:"8. Which type of history studies trade and industries?",
+options:[
+"Political history",
+"Economic history",
+"Social history",
+"Religious history"
+],
+answer:1
+},
+
+{
+question:"9. Which type of history studies people's customs and traditions?",
+options:[
+"Political history",
+"Economic history",
+"Social history",
+"Military history"
+],
+answer:2
+},
+
+{
+question:"10. One importance of studying history is to:",
+options:[
+"Forget the past",
+"Learn from past mistakes",
+"Stop development",
+"Avoid education"
+],
+answer:1
+},
+
+{
+question:"11. History helps people to:",
+options:[
+"Understand national identity",
+"Increase rainfall",
+"Build computers",
+"Play football"
+],
+answer:0
+},
+
+{
+question:"12. Why is it useful to study different types of history?",
+options:[
+"To understand different aspects of society",
+"To waste time",
+"To avoid reading",
+"To reduce knowledge"
+],
+answer:0
+},
+
+{
+question:"13. Which statement about history is TRUE?",
+options:[
+"It studies only kings",
+"It studies only wars",
+"It studies human activities in the past",
+"It studies future inventions"
+],
+answer:2
+},
+
+{
+question:"14. Which of the following best explains why history is studied?",
+options:[
+"To understand the past and make better decisions",
+"To predict lottery numbers",
+"To avoid learning",
+"To stop scientific discoveries"
+],
+answer:0
+},
+
+{
+question:"15. A timeline or time chart helps learners:",
+options:[
+"Understand the order of historical events",
+"Learn mathematics only",
+"Draw maps",
+"Predict the future"
+],
+answer:0
+}
+
+];
+
+const quiz=document.getElementById("quiz");
+
+questions.forEach((q,index)=>{
+
+let html=`
+<div class="border rounded-lg p-5 bg-gray-50">
+<h3 class="font-semibold text-lg mb-4">${q.question}</h3>
+`;
+
+q.options.forEach((option,i)=>{
+
+html+=`
+<label class="block mb-2 cursor-pointer">
+<input type="radio" name="q${index}" value="${i}" class="mr-2">
+${option}
+</label>
+`;
+
+});
+
+html+=`<p id="feedback${index}" class="mt-3 font-medium"></p></div>`;
+
+quiz.innerHTML+=html;
+
+});
+
+function submitQuiz(){
+
+let score=0;
+
+questions.forEach((q,index)=>{
+
+const selected=document.querySelector(`input[name="q${index}"]:checked`);
+const feedback=document.getElementById(`feedback${index}`);
+
+if(selected){
+
+if(Number(selected.value)===q.answer){
+
+score++;
+feedback.innerHTML="<span class='text-green-600'>✔ Correct</span>";
+
+}else{
+
+feedback.innerHTML=`<span class='text-red-600'>✘ Incorrect. Correct answer: <strong>${q.options[q.answer]}</strong></span>`;
+
+}
+
+}else{
+
+feedback.innerHTML=`<span class='text-red-600'>No answer selected. Correct answer: <strong>${q.options[q.answer]}</strong></span>`;
+
+}
+
+});
+
+let percent=((score/questions.length)*100).toFixed(1);
+
+let grade=percent>=50
+? "<span class='text-green-700 font-bold'>PASS</span>"
+: "<span class='text-red-700 font-bold'>FAIL</span>";
+
+const result=document.getElementById("result");
+
+result.classList.remove("hidden");
+
+result.innerHTML=`
+<h2 class="text-2xl font-bold mb-3">Quiz Results</h2>
+<p class="text-xl">Score: <strong>${score} / ${questions.length}</strong></p>
+<p class="text-lg">Percentage: <strong>${percent}%</strong></p>
+<p class="text-lg mt-2">${grade}</p>
+`;
+
+window.scrollTo({
+top:document.body.scrollHeight,
+behavior:"smooth"
+});
+
+}
+
+</script>
+
+</body>
+</html>
